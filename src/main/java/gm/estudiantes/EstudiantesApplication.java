@@ -58,11 +58,11 @@ public class EstudiantesApplication implements CommandLineRunner {
 		);
 	}
 
-	private boolean ejecutarOpciones(Scanner consola){
+	private boolean ejecutarOpciones(Scanner consola) {
 		var opcion = Integer.parseInt(consola.nextLine());
 		var salir = false;
 
-		switch (opcion){
+		switch (opcion) {
 			case 1 -> {//Listar estudiantes
 				logger.info(nl + "Listado de Estudiantes: " + nl);
 				List<Estudiante> estudiantes = estudianteServicio.listarEstudiantes();
@@ -104,7 +104,7 @@ public class EstudiantesApplication implements CommandLineRunner {
 				//Buscamos el estudiante a modificar
 				Estudiante estudiante =
 						estudianteServicio.buscarEstudiantePorId(idEstudiante);
-				if (estudiante != null){
+				if (estudiante != null) {
 					logger.info("Nombre: ");
 					var nombre = consola.nextLine();
 					logger.info("Apellido: ");
@@ -119,16 +119,33 @@ public class EstudiantesApplication implements CommandLineRunner {
 					estudiante.setEmail(email);
 					estudianteServicio.guardarEstudiante(estudiante);
 					logger.info("Estudiante modificado: " + estudiante + nl);
-				}
-				else
+				} else
 					logger.info("Estudiante NO encontrado con id: " + idEstudiante + nl);
 			}
+			case 5 -> {// Eliminar estudiante
+				logger.info("Eliminar estudiante: " + nl);
+				logger.info("Id Estudiante: ");
+				var idEstudiante = Integer.parseInt(consola.nextLine());
+				// Buscamos el id a eliminar
+				var estudiante = estudianteServicio.buscarEstudiantePorId(idEstudiante);
+				if (estudiante != null) {
+					estudianteServicio.eliminarEstudiante(estudiante);
+					logger.info("Estudiante eliminado: " + estudiante + nl);
 
+				} else
+					logger.info("Estudiante NO enconstrado con id: " + idEstudiante);
 
+			}
+			case 6 -> {// Salir
+				logger.info("Hasta pronto!" + nl + nl);
+				salir = true;
 
+			}
+			default -> logger.info("Opcion NO reconocida:" + opcion + nl);
 		}//fin switch
 		return salir;
+	}
 
 	}
 
-}
+
